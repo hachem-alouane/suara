@@ -1,0 +1,64 @@
+<div class="relative">
+  <div class="grid ">
+    <div class="modal-body flex flex-column justify-content-center align-items-center ">
+      <div class=" flex  flex-column gap-3  w-full justify-content-center align-items-center ">
+        <div class="flex justify-content-between gap-5  w-10 border-bottom-1 border-300">
+          <div class=" font-semibold white-space-nowrap">{{"SENDER" | translate }} :</div>
+          <div dir="ltr" class=" text-left">{{
+            ((mail?.etatCourrier === EtatCourrier.DISTRIBUE ||mail?.etatCourrier === EtatCourrier.COMPLIMENT_INFORMATION
+            ) && mail?.contenuFwd )?
+            mail?.transfereDe : mail?.expediteur }}</div>
+        </div>
+        <div class="flex justify-content-between gap-5  w-10  border-bottom-1 border-300">
+          <div class=" font-semibold white-space-nowrap">{{"RECIPIENT" | translate }} :</div>
+          <div dir="ltr" class="text-left">{{
+            ((mail?.etatCourrier === EtatCourrier.DISTRIBUE ||mail?.etatCourrier === EtatCourrier.COMPLIMENT_INFORMATION
+            ) && mail?.contenuFwd )?
+            mail?.transfereA : ''}}
+            @if (!((mail?.etatCourrier === EtatCourrier.DISTRIBUE ||mail?.etatCourrier ===
+            EtatCourrier.COMPLIMENT_INFORMATION
+            ) && mail?.contenuFwd )) {
+            @for (mailE of mail?.destinataire; track $index ; let last = $last) {
+            <div dir="ltr" class="text-left">
+              {{
+              mailE }}
+              @if (!last) {
+              ,
+              }<br>
+            </div>
+            }
+            }
+
+          </div>
+        </div>
+        <div class="flex justify-content-between gap-5  w-10  border-bottom-1 border-300">
+          <div class=" font-semibold white-space-nowrap">{{"RECEIPT_DATE" | translate }} :</div>
+          <div class="text-left">{{mail?.dateReception | dynamicDate: 'd MMM y ,HH:mm:ss' }}</div>
+        </div>
+        <div class="flex justify-content-between gap-5  w-10  border-bottom-1 border-300">
+          <div class=" font-semibold white-space-nowrap">{{"CREATION_DATE" | translate }} :</div>
+          <div class="text-left">{{mail?.dateReception | dynamicDate: 'd MMM y ,HH:mm:ss' }}</div>
+        </div>
+        <div class="flex justify-content-between gap-5   w-10 border-bottom-1 border-300">
+          <div class=" font-semibold white-space-nowrap">{{"SUBJECT" | translate }} :</div>
+          <div class="text-left">{{mail?.objet }}</div>
+        </div>
+        <div class="flex justify-content-between gap-5  w-10  border-bottom-1 border-300">
+          <div class=" font-semibold white-space-nowrap">{{"DESCRIPTION" | translate }} :</div>
+          <span class="text-left" [innerHTML]="((mail?.etatCourrier === EtatCourrier.DISTRIBUE ||mail?.etatCourrier === EtatCourrier.COMPLIMENT_INFORMATION ) && mail?.contenuFwd )?
+           ( mail?.contenuFwd | newlineToBr) :(mail?.contenu | newlineToBr) "></span>
+        </div>
+        <div class="flex justify-content-between gap-5  w-10  border-bottom-1 border-300">
+          <div class=" font-semibold white-space-nowrap">{{"REFERENCE" | translate }} :</div>
+          <div class="text-left">{{mail?.referenceCourrier }}</div>
+        </div>
+      </div>
+      <div class=" footer-set-element flex gap-3 w-full justify-content-end ">
+        <app-button (clickEv)="cancel()" size="small"
+          styleClass=" btn-action-dialogue-cus  surface-400 hover:surface-600 border-none border-round-sm ">
+          {{"CLOSE" | translate }}
+        </app-button>
+      </div>
+    </div>
+  </div>
+</div>

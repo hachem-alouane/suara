@@ -1,0 +1,25 @@
+<div class="flex w-full justify-content-between border-bottom-1 border-300">
+  <div class="font-semibold" dir="ltr">{{document.nom}}</div>
+  <div class="flex gap-3 align-items-center">
+    @if (showDelete) {
+    <app-button [text]="true" styleClass="p-1" (clickEv)="showDeleteConfirm()">
+      <i class="pi pi-trash"></i>
+    </app-button>
+    }
+    @if (toForwardActions) {
+    <form [formGroup]="myForm">
+      <app-select-button size="small" [defaultValue]="true" [isRequired]="true" [controlName]="'forwarded'"
+        [listValues]="listOfBinaryValue" [optionLabel]="'name'" [optionValue]="'value'"></app-select-button>
+    </form>
+
+    }
+    <app-button [text]="true" styleClass="p-1" (clickEv)="downloadFile(document.fileId!,document.nom!)">
+      <i class="pi pi-download"></i>
+    </app-button>
+    <app-button [text]="true" styleClass="p-1" (clickEv)="previewFile(document.fileId!,document.nom!)">
+      <i class="pi pi-eye"></i>
+    </app-button>
+
+  </div>
+
+</div>

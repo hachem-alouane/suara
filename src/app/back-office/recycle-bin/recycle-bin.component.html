@@ -1,0 +1,21 @@
+<div class="parent-wrapper  flex flex-column  mx-3 ">
+  <div class=" mb-5">
+    <div class="flex gap-3 align-items-center">
+      <svg-icon src=" assets/svgs/setting.svg" svgClass="w-full h-full  secondary-color "></svg-icon>
+      <div class="text-3xl font-bold  secondary-color mb-3 ">
+        {{"TRASH" | translate}}</div>
+    </div>
+    <form [formGroup]="myForm">
+      <div class="filters flex w-full flex-wrap gap-3 align-items-center justify-content-between ">
+        <app-input [controlName]="'search'" [placeholder]="'TYPE_TO_SEARCH'" [maxLength]="1000" styleClass=" w-full"
+          class="xl:w-7 lg:w-5 w-full"></app-input>
+        <app-date-picker class="xl:w-2 lg:w-5 w-full" [maxDate]="true" [controlName]="'startDate'"></app-date-picker>
+        <app-date-picker class="xl:w-2 lg:w-5 w-full" [minDate]="true" [controlName]="'endDate'"></app-date-picker>
+      </div>
+    </form>
+    <app-table [showAddBtn]="false" #table [titleTable]="''" (restoreEv)="RestoreAction($event)" [columns]="columns"
+      [actions]="['restore']" [searchHighlightColumns]="['referenceCourrier','expediteur','destinataire']
+      ">
+    </app-table>
+  </div>
+</div>

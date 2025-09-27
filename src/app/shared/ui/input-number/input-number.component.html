@@ -1,0 +1,33 @@
+<div class="flex flex-column">
+  @if(label) {
+  <div class="flex gap-1 align-items-end font-semibold">
+    <label [for]="controlName + '_label'" [class]="styleClassLabel">{{label}}
+      @if (isRequired) {
+      <span class="label-required">*</span>
+      }
+      @if (tooltip) {
+      <i class="pi pi-info-circle ml-2 cursor-pointer" [appendTo]="'body'" tooltipStyleClass="tooltip-custom"
+        [tooltipPosition]="tooltipPosition" [pTooltip]="tooltipText"></i>
+      }
+    </label>
+  </div>
+  }
+  <p-inputnumber #focusable [suffix]="suffix" [useGrouping]="useGrouping" [mode]="'decimal'" [placeholder]="placeholder"
+    [minFractionDigits]="mode === 'decimal'?3:0" [maxFractionDigits]="mode === 'decimal'?3:0"
+    [inputId]="controlName + '_label'" [min]="min" [max]="max" [id]="controlName" [formControlName]="controlName"
+    [class.ng-invalid]="(inputService.submitted && inputService.controlInvalid) || customError"
+    [class.ng-dirty]="(inputService.submitted && inputService.controlInvalid) || customError"
+    [inputStyleClass]="'custom-input w-full ' +( isDisabled ?' cursor-text ':' ') + styleClass" [required]="isRequired"
+    [size]="size" />
+
+  @if (isRequired&& !isFormArray) {
+  @if (inputService.controlHasRequiredError && inputService.submitted) {
+  <small class="error"> Ce champ est obligatoire. </small>
+  }
+  }
+  @if (min&& !isFormArray) {
+  @if (inputService.controlHasMinError && inputService.submitted) {
+  <small class="error">{{label ? label : "Ce champ"}} doit contenir au moins {{min}} numbers.</small>
+  }
+  }
+</div>

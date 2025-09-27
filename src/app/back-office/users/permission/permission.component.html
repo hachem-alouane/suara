@@ -1,0 +1,35 @@
+<div class="relative">
+  <div class="grid ">
+    <div class="modal-body flex flex-column justify-content-center align-items-center ">
+      <form class="flex flex-column justify-content-center h-full   mt-3 form-dialogue-one-raw" [formGroup]="myForm"
+        (ngSubmit)="savePermission()">
+        <div class="p-3">
+          <app-picklist [source]="source" [target]="target" [responsive]="true"
+            [sourceFilterPlaceholder]="'Rechercher...'" [targetFilterPlaceholder]="'Rechercher...'"
+            [listHeight]="'20rem'" [dragdrop]="true" [showControls]="true" [breakpoint]="'960px'"
+            [sourceHeader]="'PERMISSIONS_INACTIVE'" [targetHeader]="'PERMISSIONS_ACTIVE'"></app-picklist>
+
+          <div class="mt-3 selected-permissions-summary">
+            <div>{{"SELECTED_PERMISSIONS_SUMMARY"| translate}} :</div>
+            @for (group of groupedTarget; track group.moduleNameRef) {
+            <div class="flex align-items-center gap-2 mt-1">
+              <p-tag [value]="(ListOfModules[group.moduleNameRef] || ListOfModules['Default']) | translate"
+                [styleClass]="'text-white p-1 text-sm ' + (group.moduleNameRef | moduleTag)" rounded></p-tag>
+              <span>{{ group.perms.join(', ') }}</span>
+            </div>
+            }
+          </div>
+          <div class=" footer-set-element flex gap-3 w-full justify-content-end ">
+            <app-button (clickEv)="cancel()" size="small"
+              styleClass=" p-button  surface-400 hover:surface-600 border-none border-round-sm ">
+              {{"CLOSE" | translate }}
+            </app-button>
+            <app-button [loading]="loading" size="small" type="submit" styleClass=" p-button  border-round-sm">
+              {{"SAVE" | translate }}
+            </app-button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

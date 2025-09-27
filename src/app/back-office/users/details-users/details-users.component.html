@@ -1,0 +1,55 @@
+<div class="relative">
+  <div class="grid ">
+    <div class="modal-body flex flex-column justify-content-center align-items-center ">
+      <form class="flex flex-column justify-content-center h-full   mt-3 form-dialogue-one-raw" appFocusInvalidInput
+        [formGroup]="myForm" (ngSubmit)="register()">
+        <div class=" flex  flex-column gap-3  w-full justify-content-center align-items-center ">
+          <div class="flex justify-content-end   w-10">
+            <app-input [controlName]="'firstName'" [label]="'NAME'" class="w-full" [placeholder]="'NAME'"
+              [isRequired]="true">
+            </app-input>
+          </div>
+          <div class="flex justify-content-end   w-10">
+            <app-input class="w-full" [controlName]="'lastName'" [label]="'SURNAME'" [placeholder]="'SURNAME'"
+              [isRequired]="true">
+            </app-input>
+          </div>
+
+          <div class="flex justify-content-end   w-10">
+            <app-input class="w-full" [controlName]="'lieu'" [label]="'ADDRESS'" [placeholder]="'ADDRESS'"
+              [isRequired]="true">
+            </app-input>
+          </div>
+          <div class="flex flex-column justify-content-end   w-10">
+            <app-input [customError]="errorDuplicatedMail" class="w-full" [email]="true" [controlName]="'email'"
+              [label]="'EMAIL'" [placeholder]="'EMAIL'" [isRequired]="true">
+            </app-input>
+            @if(errorDuplicatedMail) {
+            <small class="error text-xs  "> {{"EMAIL_ALREADY_EXISTS" | translate}} </small>
+            }
+          </div>
+          <div class="flex justify-content-end   w-10">
+            <app-input class="w-full" [controlName]="'numeroTelephone'" [label]="'PHONE'" [minLength]="8"
+              [placeholder]="'PHONE'" [isRequired]="true">
+            </app-input>
+          </div>
+          @if (this.userId) {
+          <div class="flex justify-content-end   w-10">
+            <app-dropdown class=" w-full" styleClass="w-full" [label]="'ROLE'" [placeholder]="'ROLE'"
+              [controlName]="'role'" [listValues]="$any(roles$| async)" [optionLabel]="'translatedName'"></app-dropdown>
+          </div>
+          }
+        </div>
+        <div class=" footer-set-element flex gap-3 w-full justify-content-end ">
+          <app-button (clickEv)="cancel()" size="small"
+            styleClass=" p-button  surface-400 hover:surface-600 border-none border-round-sm ">
+            {{"CLOSE" | translate }}
+          </app-button>
+          <app-button size="small" type="submit" styleClass=" p-button  border-round-sm">
+            {{ userId ? ( "UPDATE" | translate) : ( "ADD" | translate) }}
+          </app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

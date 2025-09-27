@@ -1,0 +1,50 @@
+<div class="relative">
+  <div class="grid ">
+    <div class="modal-body flex flex-column justify-content-center align-items-center ">
+      <form class="flex flex-column justify-content-center h-full   mt-3 form-dialogue-one-raw" appFocusInvalidInput
+        [formGroup]="myForm" (ngSubmit)="register()">
+        <div class=" flex  flex-column gap-3  w-full justify-content-center align-items-center ">
+          <div class="flex justify-content-between gap-5  w-10">
+            <app-input [controlName]="'objetCr'" [label]="'SUBJECT'" [placeholder]="'SUBJECT'" [isDisabled]="true"
+              styleClass=" w-full" class="w-full"></app-input>
+          </div>
+
+          <div class="flex justify-content-between gap-5  w-10">
+            <app-textarea [rows]="10" class="w-full" [controlName]="'contenuCr'" [isDisabled]="true" [label]="'CONTENT'"
+              placeholder="CONTENT">
+            </app-textarea>
+          </div>
+
+          <div class="flex justify-content-between gap-5  w-10">
+            <app-dropdown class="w-full" [label]="'MAIL_DIRECTION'" [placeholder]="'MAIL_DIRECTION'"
+              [controlName]="'sensCr'" [listValues]="sensrs" [optionLabel]="'libelleArSensCr'"
+              [optionValue]="'idSensCr'" [isDisabled]="true"></app-dropdown>
+          </div>
+
+          @if (documents$ | async ; as documents) {
+          @if (documents?.length) {
+          <div class="flex justify-content-between gap-5  w-10  border-bottom-1 border-300 ">
+            <div class=" font-semibold white-space-nowrap">{{"DOCUMENT_NAME" | translate }}</div>
+            <div class=" font-semibold white-space-nowrap">{{"ACTIONS" | translate }}</div>
+          </div>
+          @for (document of documents; track document.id) {
+          <app-card-piece-jointe class="w-10" [document]="document"></app-card-piece-jointe>
+          }
+          }
+          }
+
+
+          <!-- <app-button (clickEv)="previewFile()">preview</app-button> -->
+
+        </div>
+        <div class=" footer-set-element flex gap-3 w-full justify-content-end ">
+          <app-button (clickEv)="cancel()" size="small"
+            styleClass=" p-button  surface-400 hover:surface-600 border-none border-round-sm ">
+            {{"CLOSE" | translate }}
+          </app-button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

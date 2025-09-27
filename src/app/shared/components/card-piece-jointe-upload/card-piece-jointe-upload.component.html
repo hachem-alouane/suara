@@ -1,0 +1,15 @@
+<div class="flex w-full  custom-card-item gap-2 align-items-between justify-content-between bg-primary">
+  <div class="flex gap-3 align-items-center">
+    <i class="pi pi-file"></i>
+    <div class="flex w-full justify-content-start">{{file.fileName}}</div>
+  </div>
+  <div class="flex gap-2 align-items-center">
+    <app-button class="border-none p-0" (clickEv)="viewFileEvent.emit({file : file.file!})">
+      <i class="pi pi-eye"></i>
+    </app-button>
+    <app-button class="border-none p-0" (clickEv)="deleteEvent.emit({index})">
+      <i class="pi pi-trash"></i>
+    </app-button>
+  </div>
+
+</div>

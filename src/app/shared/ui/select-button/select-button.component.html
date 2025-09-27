@@ -1,0 +1,36 @@
+<!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
+<div class="flex flex-column justify-content-start">
+  @if(label) {
+  <div class="flex gap-1 align-items-end font-semibold">
+    <label [id]="controlName + '_label'" [class]="styleClassLabel">{{label}}
+      @if (isRequired) {
+      <span class="label-required">*</span>
+      }</label>
+  </div>
+  }
+
+  <p-selectbutton #focusable [allowEmpty]="allowEmpty" [options]="listValues" [size]="size"
+    [formControlName]="controlName" [multiple]="multiple" [id]="controlName + '_label'"
+    [ariaLabelledBy]="controlName + '_label'" [optionLabel]="optionLabel" [styleClass]="styleClass"
+    [optionValue]="optionValue"
+    [class.ng-invalid]="(inputService.submitted && inputService.controlInvalid) || customError"
+    [class.ng-dirty]="(inputService.submitted && inputService.controlInvalid) || customError">
+    <ng-template pTemplate="item" let-item>
+      <div class="flex align-items-center justify-content-center gap-2">
+        <div>
+          {{item?.[optionLabel]}}
+        </div>
+        @if (item?.['icon']) {
+        <i [class]="'pi ' + item?.icon"></i>
+        }
+        <ng-content select="[suffix]"></ng-content>
+      </div>
+    </ng-template>
+  </p-selectbutton>
+
+
+  @if (isRequired&& !isFormArray) {
+  @if (inputService.controlHasRequiredError && inputService.submitted) {
+  <small class="error"> Ce champ est obligatoire. </small>
+  } }
+</div>

@@ -1,0 +1,83 @@
+<div class="relative">
+  <div class="grid ">
+    <div class="modal-body flex flex-column justify-content-center align-items-center ">
+      <form class="flex flex-column justify-content-center h-full   mt-3 form-dialogue-one-raw" appFocusInvalidInput
+        [formGroup]="myForm" (ngSubmit)="save()">
+        <div class=" flex  flex-column gap-3  w-full justify-content-center align-items-center ">
+          <div class="flex flex-column justify-content-between   w-10">
+            <app-input class="w-full" [controlName]="'sujet'" [label]="'SUBJECT'" [placeholder]="'SUBJECT'"
+              [isRequired]="true">
+            </app-input>
+
+          </div>
+          <div class="flex justify-content-between gap-5  w-10">
+            <app-input class="w-full" [controlName]="'contenu'" [label]="'CONTENT'" [placeholder]="'CONTENT'"
+              [isRequired]="true">
+            </app-input>
+          </div>
+          <div class="flex justify-content-between gap-5  w-10">
+            <app-textarea class="w-full" [controlName]="'description'" [label]="'DESCRIPTION' "
+              [placeholder]="'DESCRIPTION' " [isRequired]="true" [maxLength]="10000">
+              <ng-container labelPrefix> : </ng-container>
+            </app-textarea>
+          </div>
+
+          <div class="flex flex-column justify-content-between w-10">
+            <app-dropdown class="w-full" [label]="'LANGUAGE'" [isRequired]="true" [customError]="errorContentLanguage"
+              [placeholder]="'LANGUAGE'" [controlName]="'langue'" [listValues]="listOlanguage" [optionLabel]="'name'"
+              [optionValue]="'id'">
+            </app-dropdown>
+            @if(errorContentLanguage) {
+            <small class="error text-xs "> {{"CONTENT_LANGUAGE_MISMATCH" | translate}} </small>
+            }
+
+          </div>
+
+
+          <app-button [text]="true"
+            styleClass="flex w-full justify-content-center align-items-center h-17rem bg-white mt-3 cursor-pointer"
+            style="  border: 2px dashed rgba(161, 167, 196, 1);" class="w-10" (clickEv)="fileInput.click()">
+            <div class="flex gap-2 border-2 border-black-600 border-round py-1 px-4">
+              <div> {{"ADD_DOCUMENT" | translate}}</div>
+              <svg-icon src="assets/svgs/plus.svg" svgClass="w-full h-full"> </svg-icon>
+            </div>
+            <input type="file" multiple #fileInput class="text-input" style="display: none;"
+              (change)="onFileSelected($event)" />
+          </app-button>
+          @if (selectedFiles.length) {
+          <div class="mt-3 flex-column w-10 align-items-center justify-content-center gap-3 gap-3">
+            @for (file of selectedFiles; track $index; let i = $index) {
+            <div class="flex w-full justify-content-center align-items-center mb-3 ">
+              <app-card-piece-jointe-upload (deleteEvent)="deleteFile($event)" (viewFileEvent)="previewFile($event)"
+                class="w-full" [file]="file" [index]="i"></app-card-piece-jointe-upload>
+            </div>
+            }
+          </div>
+          }
+
+          @if (documents$ | async ; as documents) {
+          @if (documents?.length) {
+          <div class="flex justify-content-between gap-5  w-10  border-bottom-1 border-300 ">
+            <div class=" font-semibold white-space-nowrap">{{"DOCUMENT_NAME" | translate }}</div>
+            <div class=" font-semibold white-space-nowrap">{{"ACTIONS" | translate }}</div>
+          </div>
+          @for (document of documents; track document.id) {
+          <app-card-piece-jointe class="w-10" [document]="document"></app-card-piece-jointe>
+          }
+          }
+          }
+
+        </div>
+        <div class=" footer-set-element flex gap-3 w-full justify-content-end ">
+          <app-button (clickEv)="cancel()" size="small"
+            styleClass=" p-button  surface-400 hover:surface-600 border-none border-round-sm ">
+            {{"CLOSE" | translate }}
+          </app-button>
+          <app-button size="small" type="submit" styleClass=" p-button  border-round-sm">
+            {{ id ? ( "UPDATE" | translate) : ( "ADD" | translate) }}
+          </app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

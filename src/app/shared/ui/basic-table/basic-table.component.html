@@ -1,0 +1,299 @@
+@if ({value: isMobileOrTablet$ | async}; as isMobileOrTablet) {
+<div class="mt-4 p-datatable-wrapper w-full " [style.min-height]="false ? '100%':'100px'">
+  @if (loading) {
+  <p-table class="custom-table" appDragScroll #dt [columns]="columns | actionsFirst:isMobileOrTablet.value"
+    [style.min-height]="isMobileOrTablet.value ? '100%':'650px'"
+    [tableStyleClass]="'p-datatable-custom-default overflow-visible lg:p-datatable-custom-prime '" [lazy]="true"
+    [scrollHeight]="!isMobileOrTablet.value ? '650px' : '100%'" [rowTrackBy]="tableService.trackByFunction"
+    (onLazyLoad)="tableService.lazy($event)" [scrollable]="!isMobileOrTablet.value ? true : false"
+    [resizableColumns]="!isMobileOrTablet.value ? true : false" dataKey="id"
+    [responsiveLayout]="isMobileOrTablet.value ? 'stack' : 'scroll'" [value]="$any(tableService.dataList | async)"
+    id="tasksTable" [styleClass]="'p-datatable-gridlines '">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        @for (col of columns; track col?.field) {
+        @if (col.field === 'actions') {
+        <th [id]="col.field" [style.width]="!isMobileOrTablet.value ? '55px' : ''"
+          [style.min-width]="!isMobileOrTablet.value ? '55px' : ''" alignFrozen="right" pFrozenColumn></th>
+        }
+        @else if (col.field !== 'actions') {
+        <th [id]="col.field" [style.min-width]="!isMobileOrTablet.value ? '150px' : ''"
+          [pSortableColumn]="col?.disableSort ? null :col.field " pResizableColumn>
+          <strong class="text-xl fontb">
+            {{ col?.header | translate }}
+          </strong>
+          @if (!col?.disableSort) {
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+          }
+        </th>
+        } }
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row let-columns="columns" let-index="rowIndex">
+      <tr #pnl [pSelectableRow]="row" [pSelectableRowIndex]="index">
+        @for (col of columns ; track col.field) {
+        @if (col.field !== 'actions' && !col.extras ) {
+        <td [attr.title]="null" title="">
+          @if (isMobileOrTablet.value) {
+          <span class="p-column-title">{{ col?.header | translate}}</span>
+          }
+          <span class="text-right" [dir]="col?.ltr ?'ltr':'auto'"> {{(col?.relation2 ?
+            row?.[col?.field!]?.[col.relation!]?.[col.relation2!] :
+            col?.relation ? row?.[col?.field!]?.[col.relation!]:
+            row?.[col?.field!] )}}
+          </span>
+        </td>
+        }
+        @else if (col.field !== 'actions' && col.extras === ExtrasColumn.BINARY) {
+        <td [attr.title]="null" title="">
+          @if (isMobileOrTablet.value) {
+          <span class="p-column-title">{{ col?.header | translate}}</span>
+          }
+          <i class="pi " [class.pi-check]="row?.[col?.field] === true"
+            [class.text-green-500]="row?.[col?.field] === true" [class.pi-times]="row?.[col?.field] === false"
+            [class.text-red-500]="row?.[col?.field] === false"></i>
+        </td>
+
+        }
+        @else if (col.field !== 'actions' && col.extras === ExtrasColumn.DATE) {
+        <td [attr.title]="null" title="">
+          @if (isMobileOrTablet.value) {
+          <span class="p-column-title">{{ col?.header | translate}}</span>
+          }
+          <span class="text-right">
+            {{
+            row?.[col?.field!] | dynamicDate: 'd MMM y ,HH:mm:ss'}}
+          </span>
+
+        </td>
+        }
+
+        @else if (col.field !== 'actions' && col.extras === ExtrasColumn.BADGE) {
+        <td [attr.title]="null" title="">
+          @if (isMobileOrTablet.value) {
+          <span class="p-column-title">{{ col?.header | translate}}</span>
+          }
+          <p-tag [severity]="tableService.dataPopup.listColors[(col?.relation2 ? (row?.[col?.field!]?.[col.relation!]?.[col.relation2!]) :
+          col?.relation ? row?.[col?.field!]?.[col.relation!]:
+          row?.[col?.field!] )] || tableService.dataPopup.listColors['Default']" [value]="tableService.dataPopup.listValues[(col?.relation2 ? (row?.[col?.field!]?.[col.relation!]?.[col.relation2!] | translate) :
+          col?.relation ? (row?.[col?.field!]?.[col.relation!] | translate):
+          (row?.[col?.field!] | translate) )] || tableService.dataPopup.listValues['Default'] | translate" />
+        </td>
+        }
+        @else if (col.field !== 'actions' && col.extras === ExtrasColumn.VALUE_FIXED) {
+        <td [attr.title]="null" title="">
+          @if (isMobileOrTablet.value) {
+          <span class="p-column-title">{{ col?.header | translate}}</span>
+          }
+          <span class="text-right">
+            {{col?.valueFixed}}
+          </span>
+
+        </td>
+        }
+        @else if (col.field !== 'actions' && col.extras === ExtrasColumn.APPEND) {
+        <td [attr.title]="null" title="">
+          @if (isMobileOrTablet.value) {
+          <span class="p-column-title">{{ col?.header | translate}}</span>
+          }
+          <span class="text-right">{{(row?.[col?.field!] + ' ' + row?.[col?.appendTo!])}}</span>
+        </td>
+        }
+        @else {
+        @if (!isMobileOrTablet.value) {
+        <td class=" justify-content-center" style="overflow: visible" alignFrozen="right" pFrozenColumn>
+          <div class="w-full flex justify-content-end">
+            <app-button (clickEv)="selectItemMenu(row);menu.toggle($event);" class="w-2rem h-2rem"
+              styleClass="p-button-secondary w-2rem h-2rem">
+              <i class="pi pi-cog "></i>
+            </app-button>
+          </div>
+        </td>
+        }
+        @else {
+        <div class="w-full flex justify-content-end">
+          <app-button (clickEv)="menu.toggle($event);selectItemMenu(row)" styleClass="shadow-none border-0" class="py-1"
+            [rounded]="true" [text]="true">
+            <i class="pi pi-cog text-2xl text-gray-600"></i>
+          </app-button>
+        </div>
+        }
+        }
+        }
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      @for (_ of [1, 2, 3,4,5,6,7,8,9,10] ; track $index) {
+      <tr style="height: 46px">
+        @for ( col of columns ; track $index ; let even = $even) {
+        <td>
+          <p-skeleton [ngStyle]="{ 'width': even ? (col.field === 'year' ? '30%' : '40%') : '60%' }" />
+        </td>
+        }
+      </tr>
+      }
+    </ng-template>
+  </p-table>
+
+  }@else {
+  <p-table class="custom-table" appDragScroll #dt [columns]="columns | actionsFirst:isMobileOrTablet.value"
+    [style.min-height]="isMobileOrTablet.value ? '100%':'650px'"
+    [tableStyleClass]="'p-datatable-custom-default overflow-visible lg:p-datatable-custom-prime '" [lazy]="true"
+    [scrollHeight]="!isMobileOrTablet.value ? '650px' : '100%'" [rowTrackBy]="tableService.trackByFunction"
+    (onLazyLoad)="tableService.lazy($event)" [scrollable]="!isMobileOrTablet.value ? true : false"
+    [resizableColumns]="!isMobileOrTablet.value ? true : false" dataKey="id"
+    [responsiveLayout]="isMobileOrTablet.value && columns.length! > 1 ? 'stack' : 'scroll'"
+    [value]="$any(tableService.dataList | async)" id="tasksTable" [styleClass]="'p-datatable-gridlines '">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        @for (col of columns; track col?.field) {
+        @if (col.field === 'actions') {
+        <th [id]="col.field" [style.width]="!isMobileOrTablet.value ? '55px' : ''"
+          [style.min-width]="!isMobileOrTablet.value ? '55px' : ''" alignFrozen="right" pFrozenColumn></th>
+        }
+        @else if (col.field !== 'actions') {
+        <th [id]="col.field" [style.min-width]="!isMobileOrTablet.value ? '150px' : ''"
+          [pSortableColumn]="col?.disableSort ? null :col.field " pResizableColumn>
+          <strong class="text-xl fontb">
+            {{ col?.header | translate }}
+          </strong>
+          @if (!col?.disableSort) {
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+          }
+        </th>
+        } }
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row let-columns="columns" let-index="rowIndex">
+      <tr #pnl [pSelectableRow]="row" [pSelectableRowIndex]="index">
+        @for (col of columns ; track col.field) {
+        @if (col.field !== 'actions' && !col.extras ) {
+        <td [attr.title]="null" title="">
+          @if (isMobileOrTablet.value && columns?.length >1) {
+          <span class="p-column-title">{{
+            col?.header | translate}}</span>
+          }
+          <span class="text-right" [dir]="col?.ltr ?'ltr':'auto'"> {{(col?.relation2 ?
+            row?.[col?.field!]?.[col.relation!]?.[col.relation2!] :
+            col?.relation ? row?.[col?.field!]?.[col.relation!]:
+            row?.[col?.field!] )}}
+          </span>
+        </td>
+        }
+        @else if (col.field !== 'actions' && col.extras === ExtrasColumn.BINARY) {
+        <td [attr.title]="null" title="">
+          @if (isMobileOrTablet.value) {
+          <span class="p-column-title">{{ col?.header | translate}}</span>
+          }
+          <i class="pi " [class.pi-check]="row?.[col?.field] === true"
+            [class.text-green-500]="row?.[col?.field] === true" [class.pi-times]="row?.[col?.field] === false"
+            [class.text-red-500]="row?.[col?.field] === false"></i>
+        </td>
+
+        }
+        @else if (col.field !== 'actions' && col.extras === ExtrasColumn.LIST_VALUE) {
+        <td [attr.title]="null" title="">
+          @if (isMobileOrTablet.value) {
+          <span class="p-column-title">{{ col?.header | translate}}</span>
+          }
+          <span class="text-right">
+            @for (item of row?.[col?.field]; track $index ; let last = $last) {
+            <ng-container>
+              {{
+              item }}
+              @if (!last) {
+              ,
+              }<br>
+            </ng-container>
+            }
+
+          </span>
+        </td>
+
+        }
+        @else if (col.field !== 'actions' && col.extras === ExtrasColumn.DATE) {
+        <td [attr.title]="null" title="">
+          @if (isMobileOrTablet.value) {
+          <span class="p-column-title">{{ col?.header | translate}}</span>
+          }
+          <span class="text-right">
+            {{
+            row?.[col?.field!] | dynamicDate: 'd MMM y ,HH:mm:ss'}}
+          </span>
+
+        </td>
+        }
+
+        @else if (col.field !== 'actions' && col.extras === ExtrasColumn.BADGE) {
+        <td [attr.title]="null" title="">
+          @if (isMobileOrTablet.value) {
+          <span class="p-column-title">{{ col?.header | translate}}</span>
+          }
+          <p-tag [severity]="tableService.dataPopup.listColors[(col?.relation2 ? (row?.[col?.field!]?.[col.relation!]?.[col.relation2!]) :
+          col?.relation ? row?.[col?.field!]?.[col.relation!]:
+          row?.[col?.field!] )] || tableService.dataPopup.listColors['Default']" [value]="tableService.dataPopup.listValues[(col?.relation2 ? (row?.[col?.field!]?.[col.relation!]?.[col.relation2!] | translate) :
+          col?.relation ? (row?.[col?.field!]?.[col.relation!] | translate):
+          (row?.[col?.field!] | translate) )] || tableService.dataPopup.listValues['Default'] | translate" />
+        </td>
+        }
+        @else if (col.field !== 'actions' && col.extras === ExtrasColumn.VALUE_FIXED) {
+        <td [attr.title]="null" title="">
+          @if (isMobileOrTablet.value) {
+          <span class="p-column-title">{{ col?.header | translate}}</span>
+          }
+          <span class="text-right">
+            {{col?.valueFixed}}
+          </span>
+
+        </td>
+        }
+        @else if (col.field !== 'actions' && col.extras === ExtrasColumn.APPEND) {
+        <td [attr.title]="null" title="">
+          @if (isMobileOrTablet.value) {
+          <span class="p-column-title">{{ col?.header | translate}}</span>
+          }
+          <span class="text-right">{{(row?.[col?.field!] + ' ' + row?.[col?.appendTo!])}}</span>
+        </td>
+        }
+        @else {
+        @if (!isMobileOrTablet.value) {
+        <td class=" justify-content-center" style="overflow: visible" alignFrozen="right" pFrozenColumn>
+          <div class="w-full flex justify-content-end">
+            <app-button (clickEv)="selectItemMenu(row);menu.toggle($event);" class="w-2rem h-2rem"
+              styleClass="p-button-secondary w-2rem h-2rem">
+              <i class="pi pi-cog "></i>
+            </app-button>
+          </div>
+        </td>
+        }
+        @else {
+        <div class="w-full flex justify-content-end">
+          <app-button (clickEv)="menu.toggle($event);selectItemMenu(row)" styleClass="shadow-none border-0" class="py-1"
+            [rounded]="true" [text]="true">
+            <i class="pi pi-cog text-2xl text-gray-600"></i>
+          </app-button>
+        </div>
+        }
+        }
+        }
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">{{"NO_RESULTS_FOUND" | translate}}</td>
+      </tr>
+    </ng-template>
+  </p-table>}
+  <p-menu #menu styleClass="menu-dashboard px-2 py-1 " (onHide)="resetMenuItems()" [model]="menuItems" [popup]="true"
+    [appendTo]="'body'">
+    <ng-template pTemplate="item" let-item>
+      <div class="flex justify-content-between gap-2 align-items-center">
+        <div>
+          <i [class]="item?.icon + ' ' + item?.iconClass"></i>
+        </div>
+        <div class="text-sm font-semibold  cursor-pointer p-2 w-full">{{item?.label}}</div>
+      </div>
+    </ng-template>
+  </p-menu>
+</div>
+}

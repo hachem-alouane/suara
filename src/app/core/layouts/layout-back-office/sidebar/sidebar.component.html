@@ -1,0 +1,16 @@
+@if ({value: sideBarDesktopIsOpen$ | async}.value; as sideBarDesktopIsOpen ) {
+<div class="bg-white h-full   flex-grow-1 w-17rem sidebar hidden lg:flex">
+  <app-sidebar-content class="flex w-full"></app-sidebar-content>
+</div>
+}
+@if ({value: sideBarMobileIsOpen$ | async}.value; as sideBarMobileIsOpen ) {
+<p-drawer [closable]="true" [position]=" (isRtl$ | async)?'right':'left'" #drawerRef [visible]="!!sideBarMobileIsOpen"
+  styleClass="border-none bg-white" class="bg-white"
+  (visibleChange)="!$event && sidebarService.changeSideBarMobileIsOpen(false)">
+  <ng-template #headless>
+    <app-sidebar-content></app-sidebar-content>
+  </ng-template>
+</p-drawer>
+
+
+}

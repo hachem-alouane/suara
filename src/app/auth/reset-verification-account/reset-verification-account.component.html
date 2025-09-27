@@ -1,0 +1,102 @@
+<div class="flex ">
+  <div class="  flex-column w-5 lg:flex hidden text-primary bg-color-login min-h-screen justify-content-evenly ">
+    <div
+      class=" xl:line-height-3 line-height-2 xl:text-5xl text-3xl font-semibold text-center secondary-font-family  pt-5 px-5 ">
+      {{"DIGITAL_PLATFORM_FOR_NON_FINANCIAL_ACTIVITIES_OF_THE_ARAB_ORGANIZATION_OF_SUPREME_AUDIT_INSTITUTIONS" |
+      translate}}
+    </div>
+    <svg-icon src=" assets/svgs/login-bg.svg" svgClass="w-full h-24rem  "></svg-icon>
+
+  </div>
+  <div class="flex flex-column lg:w-7 w-full">
+    <div class="flex lg:justify-content-end justify-content-center lg:h-10rem h-9rem ">
+      <svg-icon src="assets/svgs/logo.svg" svgClass=" h-full   "></svg-icon>
+    </div>
+    <div class="flex flex-column gap-3 justify-content-center align-items-center">
+      <form [formGroup]="myForm" appFocusInvalidInput
+        (ngSubmit)="(verification ) ? verificationAccount() : resetPassword()"
+        class="flex flex-column gap-2 mt-3 lg:w-7 sm:w-11 w-12 justify-content-center align-items-center">
+        <div class="md:text-3xl text-xl secondary-color font-semibold xl:w-11 lg:w-full md:w-8 w-10 text-start">
+          {{"WELCOME_TO_OUR_DIGITAL_PLATFORM" | translate}}</div>
+        <!-- <div class="flex flex-column  xl:w-11 lg:w-full md:w-8 w-10">
+          <app-input [customError]="errorInvalidCredential" [iconLabel]="'profile.svg'"
+            [styleClassIconLabel]="'w-1rem h-1rem secondary-color'" [controlName]="'password'" [isRequired]="true" [iconLabel]="'password.svg'"
+            [label]="'PASSWORD'" [placeholder]="'PASSWORD_PLACEHOLDER'" [maxLength]="255" [minLength]="8"
+            [styleClassLabel]="'secondary-color'" styleClass=" w-full" class="w-full"></app-input>
+
+        </div> -->
+        <div class="flex flex-column xl:w-11 lg:w-full md:w-8 w-10">
+          <app-input [password]="true" [customError]="errorInvalidCredential"
+            [styleClassIconLabel]="'w-1rem h-1rem secondary-color'" [iconLabel]="'password.svg'"
+            [styleClassLabel]="'secondary-color'" styleClass=" w-full" class="w-full" [maxLength]="255"
+            [controlName]="'password'" [isRequired]="true" [label]="'PASSWORD'" [placeholder]="'********'"></app-input>
+          @if(errorInvalidCredential) {
+          <small class="error text-xs "> {{"INCORRECT_EMAIL_ADDRESS_OR_PASSWORD_PLEASE_TRY_AGAIN" | translate}}</small>
+          }
+        </div>
+
+        <div class="flex flex-column xl:w-11 lg:w-full md:w-8 w-10">
+          <app-input [confirmPassword]="true" [password]="true" [customError]="errorInvalidCredential"
+            [styleClassIconLabel]="'w-1rem h-1rem secondary-color'" [iconLabel]="'password.svg'"
+            [styleClassLabel]="'secondary-color'" styleClass=" w-full" class="w-full" [maxLength]="255"
+            [controlName]="'passwordConfirmation'" [isRequired]="true" [label]="'PASSWORD_CONFIRMATION'"
+            [placeholder]="'********'"></app-input>
+
+        </div>
+        <!-- <div class="flex flex-column  xl:w-11 lg:w-full md:w-8 w-10">
+          <app-input [customError]="errorInvalidCredential" [iconLabel]="'profile.svg'"
+            [styleClassIconLabel]="'w-1rem h-1rem secondary-color'" [controlName]="'passwordConfirmation'" [isRequired]="true"
+            [label]="'PASSWORD_CONFIRMATION'" [placeholder]="'********'" [maxLength]="255" [minLength]="8" [iconLabel]="'password.svg'"
+            [styleClassLabel]="'secondary-color'" styleClass=" w-full" class="w-full"  [customError]="errorMismatch"></app-input>
+          @if(errorMismatch) {
+            <small class="error text-xs "> {{"PASSWORDS_DO_NOT_MATCH" | translate}} </small>
+            }
+        </div> -->
+        <div class="flex xl:w-11 lg:w-full md:w-8 w-10 ">
+          <app-button class="w-full" styleClass="bg-secondary-color w-full mt-3 lg:text-xl text-base font-semibold"
+            type="submit">
+            {{"CONFIRM" | translate}}</app-button>
+        </div>
+
+        <div class="flex xl:w-11 lg:w-full md:w-8 w-10 justify-content-center align-items-center gap-2 ">
+          <div class="md:text-base text-sm"> {{"AVAILABLE_IN_LANGUAGE" | translate }} : </div>
+          @switch (currentLanguage) {
+          @case (Language.AR) {
+          <app-button [text]="true" styleClass="p-0 underline md:text-base text-sm"
+            (clickEv)="changeLanguage(Language.FR)">{{"FRENCH"
+            |translate }}
+          </app-button>
+          <div>{{"AND" | translate }}</div>
+          <app-button [text]="true" styleClass="p-0 underline md:text-base text-sm"
+            (clickEv)="changeLanguage(Language.EN)">{{"ENGLISH"
+            |translate }}
+          </app-button>
+          }
+          @case (Language.FR) { <app-button [text]="true" styleClass="p-0 underline md:text-base text-sm"
+            (clickEv)="changeLanguage(Language.AR)">{{"ARABIC"
+            |translate }}
+          </app-button>
+          <div>{{"AND" | translate }}</div>
+          <app-button [text]="true" styleClass="p-0 underline md:text-base text-sm"
+            (clickEv)="changeLanguage(Language.EN)">{{"ENGLISH"
+            |translate }}
+          </app-button>
+          }
+          @case (Language.EN) { <app-button [text]="true" styleClass="p-0 underline md:text-base text-sm"
+            (clickEv)="changeLanguage(Language.AR)">{{"ARABIC"
+            |translate }}
+          </app-button>
+          <div>{{"AND" | translate }}</div>
+          <app-button [text]="true" styleClass="p-0 underline md:text-base text-sm"
+            (clickEv)="changeLanguage(Language.FR)">{{"FRENCH"
+            |translate }}
+          </app-button>
+          }
+
+          }
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,254 @@
+<div class="flex w-full  flex-column gap-2  justify-content-start align-items-start ">
+  <div class="flex w-full mt-2 justify-content-end px-3 lg:hidden ">
+    <app-button [text]="true" (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)">
+      <i class="pi pi-times text-xl"></i>
+    </app-button>
+  </div>
+  <div class=" flex-column lg:hidden flex justify-content-center align-items-center my-4 w-full">
+    <app-button [text]="true" [size]="'small'" styleClass=" p-0 border-radius-5 h-full flex border-none cursor-pointer">
+      <div class="flex" style="width: 60px;height: 60px;">
+        <svg-icon src="assets/svgs/user-photo.svg" svgClass="w-full h-full"></svg-icon>
+      </div>
+    </app-button>
+    <div class="text-sm font-semibold text-primary">{{(currentUser$ | async)?.username}}</div>
+  </div>
+  <div class="flex flex-column  w-full ">
+    <app-link-button routerLinkActive="actiazve" #rla="routerLinkActive"
+      [styleClassRouterLinkActive]="rla.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+      [routerLink]="'/dashboard'" [text]="true" class="w-full "
+      (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+      styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+      <div class=" justify-content-start gap-2 w-full flex align-items-center">
+        <i class="pi pi-home text-xl"></i>
+        <div class="font-bold text-left">
+          {{"HOME_PAGE" | translate}}
+        </div>
+      </div>
+    </app-link-button>
+    <app-link-button *appHasModule="'STATISTICS'" routerLinkActive="actiazve" #rla16="routerLinkActive"
+      [styleClassRouterLinkActive]="rla16.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+      [routerLink]="'/statistics'" [text]="true" class="w-full "
+      (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+      styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+      <div class=" justify-content-start gap-2 w-full flex align-items-center">
+        <i class="pi pi-chart-bar text-lg"></i>
+        <div class="font-bold text-left">
+          {{"STATISTICS" | translate}}
+        </div>
+      </div>
+    </app-link-button>
+
+    <app-button
+      *appHasAnyModule="['WRITE_MESSAGE','REGISTRY_OFFICE_REQUESTS','INCOMING_CORRESPONDENCE','OUTGOING_CORRESPONDENCE','CORRESPONDENCE_FOLLOW_UP','ARCHIVED_CORRESPONDENCE','DISTRIBUTED_CORRESPONDENCE','ACCEPTED_MAIL_LIST']"
+      (clickEv)="toggleNiv1()" [text]="true" class="w-full"
+      styleClass=" hover:text-white  hover:bg-primary  flex w-full px-3 py-2 font-semibold  text-base">
+      <div class="flex w-full justify-content-between align-items-center">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="p-0 w-1rem h-2rem cursor-pointer">
+            <svg-icon src="assets/svgs/sms.svg" svgClass="w-full h-full"></svg-icon>
+          </div>
+          <div class="font-bold text-left">
+            {{"MESSAGES" | translate}}
+          </div>
+        </div>
+        <i class="pi " [class.pi-chevron-up]=" niv1Open" [class.pi-chevron-down]="!niv1Open"></i>
+      </div>
+    </app-button>
+    <div #niv1SubItem class="pl-4    w-full " [class.hidden]="!niv1Open">
+      <div class="pl-4  w-full  transition-all duration-[400ms] ease-in-out text-sm">
+        @if ((currentUser$ | async)?.role?.name === role.EMPLOYER) {
+        <app-link-button *appHasModule="'WRITE_MESSAGE'" routerLinkActive="actiazve" #rla2="routerLinkActive"
+          [styleClassRouterLinkActive]="rla2.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+          [routerLink]="'/write-message'" [text]="true" class="w-full "
+          (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+          styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+          <div class=" justify-content-start gap-2 w-full flex align-items-center">
+            <div class="font-bold">
+              {{"WRITE_MESSAGE" | translate}}
+            </div>
+          </div>
+        </app-link-button>
+        }
+        @else {
+        <app-link-button *appHasModule="'WRITE_MESSAGE'" routerLinkActive="actiazve" #rla222="routerLinkActive"
+          [styleClassRouterLinkActive]="rla222.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+          [routerLink]="'/write-message-admin'" [text]="true" class="w-full "
+          (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+          styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+          <div class=" justify-content-start gap-2 w-full flex align-items-center">
+            <div class="font-bold">
+              {{"WRITE_MESSAGE" | translate}}
+            </div>
+          </div>
+        </app-link-button>
+        }
+      </div>
+      <p-divider styleClass=" bg-primary flex w-full mx-2 " type="solid" />
+
+      <app-link-button *appHasModule="'REGISTRY_OFFICE_REQUESTS'" routerLinkActive="actiazve" #rla3="routerLinkActive"
+        [styleClassRouterLinkActive]="rla3.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+        [routerLink]="'/registry-request'" [text]="true" class="w-full "
+        (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+        styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="font-bold text-left">
+            {{(currentUser$ | async)?.role?.name === role.EMPLOYER ?( "FOLLOW_UP_REGISTRY_REQUESTS"| translate) :
+            ("REGISTRY_REQUESTS" | translate)}}
+          </div>
+        </div>
+      </app-link-button>
+      <app-link-button *appHasModule="'INCOMING_CORRESPONDENCE'" routerLinkActive="actiazve" #rla4="routerLinkActive"
+        [styleClassRouterLinkActive]="rla4.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+        [routerLink]="'/incoming-correspondence'" [text]="true" class="w-full "
+        (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+        styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="font-bold text-left">
+            {{"INCOMING_CORRESPONDENCE" | translate}}
+          </div>
+        </div>
+      </app-link-button>
+      <app-link-button *appHasModule="'OUTGOING_CORRESPONDENCE'" routerLinkActive="actiazve" #rla5="routerLinkActive"
+        [styleClassRouterLinkActive]="rla5.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+        [routerLink]="'/outgoing-correspondence'" [text]="true" class="w-full "
+        (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+        styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="font-bold text-left">
+            {{"OUTGOING_CORRESPONDENCE" | translate}}
+          </div>
+        </div>
+      </app-link-button>
+      <p-divider styleClass=" bg-primary flex w-full mx-2 " type="solid" />
+      <app-link-button *appHasModule="'CORRESPONDENCE_FOLLOW_UP'" routerLinkActive="actiazve" #rla6="routerLinkActive"
+        [styleClassRouterLinkActive]="rla6.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+        [routerLink]="'/correspondence-follow-up'" [text]="true" class="w-full "
+        (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+        styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="font-bold text-left">
+            {{"CORRESPONDENCE_FOLLOW_UP" | translate}}
+          </div>
+        </div>
+      </app-link-button>
+      <app-link-button *appHasModule="'ARCHIVED_CORRESPONDENCE'" routerLinkActive="actiazve" #rla7="routerLinkActive"
+        [styleClassRouterLinkActive]="rla7.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+        [routerLink]="'/archived-correspondence'" [text]="true" class="w-full "
+        (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+        styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="font-bold text-left">
+            {{"ARCHIVED_CORRESPONDENCE" | translate}}
+          </div>
+        </div>
+      </app-link-button>
+      <app-link-button *appHasModule="'DISTRIBUTED_CORRESPONDENCE'" routerLinkActive="actiazve" #rla8="routerLinkActive"
+        [styleClassRouterLinkActive]="rla8.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+        [routerLink]="'/distributed-correspondence'" [text]="true" class="w-full "
+        (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+        styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="font-bold text-left">
+            {{"DISTRIBUTED_CORRESPONDENCE" | translate}}
+          </div>
+        </div>
+      </app-link-button>
+      <app-link-button *appHasModule="'ACCEPTED_MAIL_LIST'" routerLinkActive="actiazve" #rla9="routerLinkActive"
+        [styleClassRouterLinkActive]="rla9.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+        [routerLink]="'/accepted-mail-list'" [text]="true" class="w-full "
+        (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+        styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="font-bold text-left">
+            {{"ACCEPTED_MAIL_LIST" | translate}}
+          </div>
+        </div>
+      </app-link-button>
+    </div>
+    <app-button *appHasAnyModule="['USER'  ,'MEMBER' ,'GROUP' ,'MODEL' ,'TRASH']" [text]="true" class="w-full"
+      (clickEv)="toggleNiv2()"
+      styleClass=" hover:text-white  hover:bg-primary  flex w-full px-3 py-2 font-semibold  text-base">
+      <div class="flex w-full justify-content-between align-items-center">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="p-0 w-1rem h-2rem cursor-pointer">
+            <svg-icon src="assets/svgs/setting.svg" svgClass="w-full h-full"></svg-icon>
+          </div>
+          <div class="font-bold text-left">
+            {{"UPDATE" | translate}}
+          </div>
+        </div>
+        <i class="pi " [class.pi-chevron-up]="!niv2SubItem.classList.contains('hidden')"
+          [class.pi-chevron-down]="niv2SubItem.classList.contains('hidden')"></i>
+      </div>
+    </app-button>
+    <div #niv2SubItem class="pl-4  w-full  " [class.hidden]="!niv2Open">
+      <app-link-button *appHasModule="'USER'" routerLinkActive="actiazve" #rla10="routerLinkActive"
+        [styleClassRouterLinkActive]="rla10.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+        [routerLink]="'/users'" [text]="true" class="w-full "
+        (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+        styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="font-bold">
+            {{"USER" | translate}}
+          </div>
+        </div>
+      </app-link-button>
+      <app-link-button *appHasModule="'MEMBER'" routerLinkActive="actiazve" #rla11="routerLinkActive"
+        [styleClassRouterLinkActive]="rla11.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+        [routerLink]="'/member'" [text]="true" class="w-full "
+        (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+        styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="font-bold">
+            {{"MEMBER" | translate}}
+          </div>
+        </div>
+      </app-link-button>
+      <app-link-button *appHasModule="'GROUP'" routerLinkActive="actiazve" #rla15="routerLinkActive"
+        [styleClassRouterLinkActive]="rla15.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+        [routerLink]="'/group'" [text]="true" class="w-full "
+        (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+        styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="font-bold">
+            {{"GROUP" | translate}}
+          </div>
+        </div>
+      </app-link-button>
+      <app-link-button *appHasModule="'MODEL'" routerLinkActive="actiazve" #rla19="routerLinkActive"
+        [styleClassRouterLinkActive]="rla19.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+        [routerLink]="'/mail-template'" [text]="true" class="w-full "
+        (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+        styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="font-bold">
+            {{"MODEL" | translate}}
+          </div>
+        </div>
+      </app-link-button>
+      <app-link-button *appHasModule="'TRASH'" routerLinkActive="actiazve" #rla18="routerLinkActive"
+        [styleClassRouterLinkActive]="rla18.isActive ? 'text-white bg-primary':'text-primary bg-white'"
+        [routerLink]="'/recycle-bin'" [text]="true" class="w-full "
+        (clickEv)="sidebarService.changeSideBarMobileIsOpen(false)"
+        styleClass=" hover:text-white  hover:bg-primary   flex w-full px-3 py-2 font-semibold  text-base">
+        <div class=" justify-content-start gap-2 w-full flex align-items-center">
+          <div class="font-bold">
+            {{"TRASH" | translate}}
+          </div>
+        </div>
+      </app-link-button>
+
+    </div>
+    <app-button [text]="true" class="w-full" (clickEv)="sidebarService.changeSideBarMobileIsOpen(false);logout()"
+      styleClass=" hover:text-white  hover:bg-primary  flex w-full px-3 py-2 font-semibold  text-base">
+      <div class=" justify-content-start gap-2 w-full flex align-items-center">
+        <div class="p-0 w-1rem h-2rem cursor-pointer">
+          <svg-icon src="assets/svgs/off.svg" svgClass="w-full h-full"></svg-icon>
+        </div>
+        <div class="font-bold">
+          {{"SIGN_OUT" | translate}}
+        </div>
+      </div>
+    </app-button>
+  </div>
+</div>

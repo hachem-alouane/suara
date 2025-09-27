@@ -1,0 +1,87 @@
+<div class="parent-wrapper flex flex-column mt-2 mx-3">
+  <div class="flex flex-column">
+    <!-- Header -->
+    <div class="flex align-items-center gap-3">
+      <i class="pi pi-chart-bar secondary-color text-xl"></i>
+      <div class="text-3xl font-bold secondary-color">{{ "STATISTICS" | translate }}</div>
+    </div>
+
+    <!-- Cards -->
+    <div class="flex flex-wrap justify-content-evenly my-3">
+      @for (dashboardCard of dataDashboardCard; track dashboardCard?.id) {
+        <app-dashboard-card class="bg-color-card-chart flex flex-column gap-2 text-center w-full sm:w-15rem"
+          [data]="dashboardCard"></app-dashboard-card>
+      }
+    </div>
+
+    <!-- =================== 1) COURRIERS =================== -->
+    <div class="flex text-2xl secondary-color">{{ "MESSAGING_STATISTICS" | translate }}</div>
+    <div class="flex flex-wrap gap-4 justify-content-between w-full">
+      <!-- Bar -->
+      <div class="flex flex-column items-center flex-1 min-w-[300px]">
+        <form [formGroup]="formDatePickerCourrierBars" class="flex flex-column gap-3 mb-4 w-full justify-content-center">
+          <div class="flex w-full gap-3 ">
+            <app-date-picker [controlName]="'startDate'" [maxDate]="true"  class="xl:w-3 lg:w-9 w-full"></app-date-picker>
+            <app-date-picker [controlName]="'endDate'" [minDate]="true"  class="xl:w-3 lg:w-9 w-full"></app-date-picker>
+          </div>
+           </form>
+        <app-dashboard-bar [labels]="labelsCourrierBars" [datasets]="datasetsCourrierBars" class="w-full h-full"></app-dashboard-bar>
+         <form [formGroup]="formRadioButtonsCourrierBars">
+                <div class="flex w-full  ">
+        <app-radio-button-group [controlName]="'filtersPeriod'" [values]="formFiltersPeriodCourrier" [defaultValue]="'semaine'"></app-radio-button-group>
+                </div>
+       </form>
+      </div>
+      <!-- Pie -->
+       <div class="flex flex-column items-center flex-1 min-w-[300px]">
+        <form [formGroup]="formDatePickerCourrierPie" class="w-full flex flex-column gap-3 justify-content-center">
+          <div class="flex justify-content-end gap-3">
+            <app-date-picker [controlName]="'startDate'"  [maxDate]="true" class="xl:w-3 lg:w-9 w-full"></app-date-picker>
+            <app-date-picker [controlName]="'endDate'" [minDate]="true" class="xl:w-3 lg:w-9 w-full"></app-date-picker>
+            <app-dropdown [controlName]="'etatCourrier'" [listValues]="filterEtatCourrier" [optionLabel]="'name'" [optionValue]="'value'" [placeholder]="'STATUS'"></app-dropdown>
+            <app-dropdown [controlName]="'sensCourrier'" [listValues]="filterSensCourrier" [optionLabel]="'name'" [optionValue]="'value'" [placeholder]="'MAIL_DIRECTION'"></app-dropdown>
+          </div>
+          <app-dashboard-pie [labels]="labelsCourrierPie" [datasets]="datasetsCourrierPie"></app-dashboard-pie> 
+             <div class="flex w-full mt-3">
+        <app-radio-button-group [controlName]="'filtersPeriod'" [values]="formFiltersPeriodCourrier" [defaultValue]="'semaine'"></app-radio-button-group>
+                </div> 
+        </form>
+      </div> 
+    </div>
+
+    <!-- =================== 2) DEMANDES =================== -->
+     <div class="flex text-2xl secondary-color mt-5">{{ "REQUEST_STATISTICS" | translate }}</div>
+     <div class="flex flex-wrap gap-4 justify-between w-full"> 
+
+      <!-- Bar -->
+       <div class="flex flex-column items-center flex-1 min-w-[300px]">
+        <form [formGroup]="formStatsDemandeBars" class="flex flex-column gap-3 mb-4 w-full justify-center">
+          <div class="flex gap-2">
+            <app-date-picker [controlName]="'startDate'" [maxDate]="true" class="xl:w-3 lg:w-9 w-full"></app-date-picker>
+            <app-date-picker [controlName]="'endDate'" [minDate]="true" class="xl:w-3 lg:w-9 w-full"></app-date-picker>
+            <app-dropdown [controlName]="'typeDemande'" [listValues]="filterTypeDemande" [optionLabel]="'name'" [optionValue]="'value'" [placeholder]="'TYPE_DEMANDE'"></app-dropdown>
+          </div>
+            <app-dashboard-bar [labels]="labelesDemandeBars" [datasets]="datasetsDemandeBars" class="w-full h-full"></app-dashboard-bar>
+         <div class="flex w-full mt-3">
+        <app-radio-button-group [controlName]="'period'" [values]="formFiltersdemande" [defaultValue]="'week'"></app-radio-button-group>
+                </div>
+    </form>
+      </div>
+
+      <!-- Pie -->
+      <div class="flex flex-column items-center flex-1 min-w-[300px]">
+        <form [formGroup]="formStatsDemandePie" class="w-full flex  flex-column gap-3">
+          <div class="flex justify-content-end gap-3">
+            <app-date-picker [controlName]="'startDate'" class="xl:w-3 lg:w-9 w-full"></app-date-picker>
+            <app-date-picker [controlName]="'endDate'" class="xl:w-3 lg:w-9 w-full"></app-date-picker>
+            <app-dropdown [controlName]="'typeDemande'" [listValues]="filterTypeDemande" [optionLabel]="'name'" [optionValue]="'value'" [placeholder]="'TYPE_DEMANDE'"></app-dropdown>
+          </div>
+          <app-dashboard-pie [labels]="labelesDemandePie" [datasets]="datasetsDemandePie"></app-dashboard-pie>
+             <div class="flex w-full mt-3">
+        <app-radio-button-group [controlName]="'period'" [values]="formFiltersPeriodCourrier" [defaultValue]="'semaine'"></app-radio-button-group>
+                </div>
+        </form>
+      </div>
+    <!-- </div> -->
+  </div>
+</div>

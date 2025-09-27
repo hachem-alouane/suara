@@ -1,0 +1,9 @@
+<div class="flex flex-wrap gap-3">
+  @for (value of values; track $index;let index = $index ) {
+  <div class="flex  align-items-center gap-2">
+    <p-radiobutton [name]="controlName" [variant]="'filled'" [size]="value.size" [styleClass]="value?.styleClass"
+      [inputId]="value.label" [formControlName]="controlName" [value]="value?.value" />
+    <label [for]="value.label" [class]="' ' +value?.styleClassLabel">{{ value.label}}</label>
+  </div>
+  }
+</div>

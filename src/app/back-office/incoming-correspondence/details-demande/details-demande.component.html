@@ -1,0 +1,104 @@
+<div class="relative">
+  <div class="grid ">
+    <div class="modal-body flex flex-column justify-content-center align-items-center ">
+      <form class="flex flex-column justify-content-center h-full   mt-3 form-dialogue-one-raw" appFocusInvalidInput
+        [formGroup]="myForm" (ngSubmit)="register()">
+        <div class=" flex  flex-column gap-3  w-full justify-content-center align-items-center ">
+          <div class="flex justify-content-between gap-5  w-10  border-bottom-1 border-300">
+            <div class=" font-semibold white-space-nowrap">{{"SENDER" | translate }} :</div>
+            <div class="text-left">{{demande?.creeParEmail }}</div>
+          </div>
+          <div class="flex justify-content-between gap-5  w-10  border-bottom-1 border-300">
+            <div class=" font-semibold white-space-nowrap">{{"RECIPIENT" | translate }} :</div>
+            <div class="text-left">{{demande?.destinataireEmail }}</div>
+          </div>
+          <div class="flex justify-content-between gap-5  w-10  border-bottom-1 border-300">
+            <div class=" font-semibold white-space-nowrap">{{"DATE" | translate }} :</div>
+            <div class="text-left">{{demande?.dateDeDerniereModification! | dynamicDate: 'd MMM y ,HH:mm:ss' }}</div>
+          </div>
+
+          <div class="flex justify-content-between gap-5  w-10  border-bottom-1 border-300">
+            <div class=" font-semibold white-space-nowrap">{{"SUBJECT" | translate }} :</div>
+            <div class="text-left">{{demande?.objetDeDerniereModification }}</div>
+          </div>
+          <div class="flex justify-content-between gap-5  w-10  border-bottom-1 border-300">
+            <div class=" font-semibold white-space-nowrap">{{"DESCRIPTION" | translate }} :</div>
+            <div class="text-left" [innerHTML]="demande?.descriptionDeDerniereModification ?? '' | newlineToBr ">
+            </div>
+          </div>
+          @if (demande?.historique?.length! > 1) {
+          <p-fieldset [legend]="'ORDER_HISTORY'| translate" [toggleable]="true" [collapsed]="true" class="w-10 flex"
+            styleClass="flex w-full">
+            @for (historique of demande?.historique; track historique?.dateDeDerniereModification;let first = $first
+            ;let last = $last
+            ) {
+            @if (!first) {
+            <div [class.mb-3]="last" [class.border-bottom-1]="!last"
+              class=" flex  flex-column gap-3  w-full justify-content-center align-items-center ">
+              <div class="flex justify-content-between gap-5  w-full  border-bottom-1 border-300">
+                <div class=" font-semibold white-space-nowrap">{{"SENDER" | translate }} :</div>
+                <div class="text-left">{{historique?.creeParEmail }}</div>
+              </div>
+              <div class="flex justify-content-between gap-5  w-full  border-bottom-1 border-300">
+                <div class=" font-semibold white-space-nowrap">{{"RECIPIENT" | translate }} :</div>
+                <div class="text-left">{{historique?.destinataireEmail }}</div>
+              </div>
+              <div class="flex justify-content-between gap-5  w-full  border-bottom-1 border-300">
+                <div class=" font-semibold white-space-nowrap">{{"DATE" | translate }} :</div>
+                <div class="text-left">{{historique?.dateDeDerniereModification! | dynamicDate: 'd MMM y ,HH:mm:ss' }}
+                </div>
+              </div>
+
+              <div class="flex justify-content-between gap-5  w-full  border-bottom-1 border-300">
+                <div class=" font-semibold white-space-nowrap">{{"SUBJECT" | translate }} :</div>
+                <div class="text-left">{{historique?.objetDeDerniereModification }}</div>
+              </div>
+              <div class="flex justify-content-between gap-5  w-full  border-bottom-1 border-300">
+                <div class=" font-semibold white-space-nowrap">{{"DESCRIPTION" | translate }} :</div>
+                <div class="text-left" [innerHTML]="historique?.descriptionDeDerniereModification ?? '' | newlineToBr ">
+                </div>
+              </div>
+            </div>
+            }
+            }
+          </p-fieldset>
+          }
+          @if (documents$ | async ; as documents) {
+          @if (documents?.length) {
+          <div class="flex justify-content-between gap-5  w-10  border-bottom-1 border-300 ">
+            <div class=" font-semibold white-space-nowrap">{{"DOCUMENT_NAME" | translate }}</div>
+            <div class=" font-semibold white-space-nowrap">{{"ACTIONS" | translate }}</div>
+          </div>
+          @for (document of documents; track document.id) {
+          <app-card-piece-jointe class="w-10" [document]="document"></app-card-piece-jointe>
+          }
+          }
+          }
+          <div class="flex justify-content-between gap-5  w-10">
+            <app-dropdown class="w-full" [label]="'DECISIONN'" [placeholder]="'DECISIONN'"
+              [controlName]="'decsionformcontrol'" [listValues]="ListOfDecisions" [isRequired]="true"
+              [optionLabel]="'name'" [optionValue]="'value'"></app-dropdown>
+          </div>
+          @if (myForm.get('decsionformcontrol')?.value ==="CI") {
+          <div class="flex justify-content-between gap-5  w-10">
+            <app-textarea class="w-full" [controlName]="'description'" [isRequired]="true" [maxLength]="30000"
+              [label]="'MESSAGE'" placeholder="MESSAGE">
+              <ng-container labelPrefix> : </ng-container>
+            </app-textarea>
+          </div>
+          }
+
+        </div>
+        <div class=" footer-set-element flex gap-3 w-full justify-content-end ">
+          <app-button (clickEv)="cancel()" size="small"
+            styleClass=" p-button  surface-400 hover:surface-600 border-none border-round-sm ">
+            {{"CLOSE" | translate }}
+          </app-button>
+          <app-button [loading]="loading" size="small" type="submit" styleClass=" p-button  border-round-sm">
+            {{"CONFIRM_REQUEST" | translate }}
+          </app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

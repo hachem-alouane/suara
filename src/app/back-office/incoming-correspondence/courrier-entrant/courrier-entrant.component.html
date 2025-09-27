@@ -1,0 +1,27 @@
+<div class="parent-wrapper  flex flex-column  mx-3 my-4 ">
+  <div class="flex w-full justify-content-between">
+    <div class="flex gap-2 align-items-center">
+      <div style="width: 20px;height: 19px;" class="flex align-items-center">
+        <svg-icon src=" assets/svgs/message.svg" svgClass="w-full h-full flex  text-primary  "></svg-icon>
+      </div>
+      <div class="text-2xl font-bold  text-primary ">
+        {{"RECEIVE_INCOMING_CORRESPONDENCE" | translate}}</div>
+    </div>
+    <app-return-back-button></app-return-back-button>
+  </div>
+  <div class="flex gap-2 align-items-start mt-4 flex-column">
+    <app-button (clickEv)="showDetails()" styleClass="bg-tertiary-color mt-3"> {{"CORRESPONDENCE_REPORT" | translate}}
+      {{mail?.referenceCourrier}}
+    </app-button>
+    @if (documents$ | async ; as documents) {
+    @if (documents?.length) {
+    <div class="flex justify-content-between gap-5 mt-5  md:w-11 w-full  border-bottom-1 border-300 ">
+      <div class=" text-xl font-semibold white-space-nowrap">{{"DOCUMENT_NAME" | translate }}</div>
+      <div class=" text-xl font-semibold white-space-nowrap">{{"ACTIONS" | translate }}</div>
+    </div>
+    @for (document of documents; track document?.id) {
+    <app-card-piece-jointe class="md:w-11 w-full py-2 flex align-content-center"
+      [document]="document"></app-card-piece-jointe>
+    }
+    }}
+  </div>

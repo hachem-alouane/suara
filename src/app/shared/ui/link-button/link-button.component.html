@@ -1,0 +1,6 @@
+<a [routerLink]="routerLink" (click)="clickEv.emit($event)"
+  [class]="' border-none ' + (text ? 'p-button-link ':'') +styleClass +' '+styleClassRouterLinkActive"
+  [class.no-underline]="noUnderline" [class.underline]="!noUnderline" [class.p-button]="buttonMode">
+  <ng-content select="[prefix]"></ng-content>
+  <ng-content></ng-content>
+</a>

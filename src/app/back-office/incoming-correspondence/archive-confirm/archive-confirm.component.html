@@ -1,0 +1,30 @@
+<div class="relative">
+  <div class="grid ">
+    <div class="modal-body flex flex-column justify-content-center align-items-center ">
+      <form class="flex flex-column justify-content-center h-full   mt-3 form-dialogue-one-raw" appFocusInvalidInput
+        [formGroup]="myForm" (ngSubmit)="archive()">
+        <div class=" flex  flex-column gap-3   w-full justify-content-center align-items-center ">
+          <div class="flex   w-10">
+            {{"MAIL_WILL_BE_ARCHIVED" | translate }}
+          </div>
+          <div class="flex   w-10 ">
+            <app-dropdown class="w-full" styleClass="w-full" [placeholder]="'PRIORITY'" [label]="'PRIORITY'"
+              [controlName]="'priority'" [listValues]="listOfProrities" [optionLabel]="'name'"
+              [optionValue]="'value'"></app-dropdown>
+          </div>
+
+        </div>
+        <div class=" footer-set-element flex gap-3 w-full justify-content-end  ">
+          <app-button (clickEv)="cancel()" size="small"
+            styleClass="btn-action-dialogue-cus  surface-400 hover:surface-600 border-none border-round-sm ">
+            {{"CANCEL" | translate }}
+          </app-button>
+          <app-button size="small" type="submit" [loading]="loading"
+            styleClass=" btn-action-dialogue-cus p-button-success  border-round-sm">
+            {{"YES" | translate }}
+          </app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

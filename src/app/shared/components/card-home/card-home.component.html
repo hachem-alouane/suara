@@ -1,0 +1,8 @@
+<app-link-button [text]="true" [routerLink]="cardHome.link!"
+  styleClass="flex gap-2 p-1  hover:text-blue-800 text-primary  flex-column align-content-center justify-content-center border-gray-100 border-2 shadow-2 border-round-md bg-white cursor-pointer">
+  <div class="xl:h-12rem xl:w-22rem lg:h-9rem lg:w-12rem  h-10rem width-spec-mb flex ">
+    <svg-icon [src]="cardHome.img!" class="h-full w-full " svgClass="h-full w-full "></svg-icon>
+  </div>
+  <div class="text-2xl  font-bold  secondary-font-family flex justify-content-center w-full">
+    {{cardHome.title}}</div>
+</app-link-button>

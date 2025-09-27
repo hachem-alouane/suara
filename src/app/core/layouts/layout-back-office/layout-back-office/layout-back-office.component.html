@@ -1,0 +1,29 @@
+<div class="wrapper min-h-screen flex flex-column">
+  <app-header class=""></app-header>
+  @if ({value: sideBarDesktopIsOpen$ | async}; as sideBarDesktopIsOpen ) {
+  <div class="content flex-grow-1  flex" [class.sidebar-open]="sideBarDesktopIsOpen.value"
+    [class.sidebar-closed]="!sideBarDesktopIsOpen.value">
+    <app-sidebar class=""></app-sidebar>
+    <div class=" flex-grow-1 bg-color-back-office ">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  }
+</div>
+<p-toast [preventOpenDuplicates]="true" [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}">
+  <ng-template let-msg pTemplate="detail">
+    <div class="flex flex-column gap-2 font-inter-dashboard-2 w-full">
+      <div class="font-bold text-lg "><strong>{{msg.summary}} </strong> </div>
+      <div [innerHtml]="msg.detail"></div>
+    </div>
+  </ng-template>
+</p-toast>
+
+<p-confirmDialog [baseZIndex]="10000" appendTo="body">
+  <ng-template #message let-message>
+    <div class="flex  w-full">
+      <div [innerHtml]="message.message"></div>
+    </div>
+  </ng-template>
+
+</p-confirmDialog>

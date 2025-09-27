@@ -1,0 +1,44 @@
+<div class="relative">
+  <div class="grid ">
+    <div class="modal-body flex flex-column justify-content-center align-items-center ">
+      <form class="flex flex-column justify-content-center h-full   mt-3 form-dialogue-one-raw" appFocusInvalidInput
+        [formGroup]="myForm" (ngSubmit)="save()">
+
+        <div class=" flex  flex-column gap-3  w-full justify-content-center align-items-center ">
+          <div class="flex justify-content-between flex-column  w-10">
+            <app-input class="w-full" [customError]="errorCodeDuplicated" [controlName]="'code'" [label]="'CODE'"
+              [placeholder]="'CODE'" [isRequired]="true">
+            </app-input>
+            @if(errorCodeDuplicated) {
+            <small class="error text-xs "> {{"CODE_ALREADY_EXISTS" | translate}} </small>
+            }
+          </div>
+          <div class="flex justify-content-between flex-column  w-10">
+            <app-input class="w-full" [customError]="errorLibDuplicated" [controlName]="'lib'" [label]="'NAME'"
+              [placeholder]="'NAME'" [isRequired]="true">
+            </app-input>
+            @if(errorLibDuplicated) {
+            <small class="error text-xs "> {{"NAME_ALREADY_EXISTS" | translate}} </small>
+            }
+          </div>
+          <div class="flex justify-content-between flex-column  w-10">
+            <app-multiple-select class="w-full" [placeholder]="'MEMBER'" [label]="'MEMBER'" [controlName]="'membreIds'"
+              [listValues]="$any(members$ | async)" [optionLabel]="'nom'" [filter]="true" [filterBy]="'nom'"
+              [optionValue]="'id'" [columnsViewMode]="columnsMember"
+              [dataViewMode]="dataMembersView"></app-multiple-select>
+
+          </div>
+        </div>
+        <div class=" footer-set-element flex gap-3 w-full justify-content-end ">
+          <app-button (clickEv)="cancel()" size="small"
+            styleClass=" p-button  surface-400 hover:surface-600 border-none border-round-sm ">
+            {{"CLOSE" | translate }}
+          </app-button>
+          <app-button size="small" type="submit" styleClass=" p-button  border-round-sm">
+            {{ idGroup ? ( "UPDATE" | translate) : ( "ADD" | translate) }}
+          </app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

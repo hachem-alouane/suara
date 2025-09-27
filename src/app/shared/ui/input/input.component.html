@@ -1,0 +1,67 @@
+<div class="flex flex-column ">
+  @if(label) {
+  <div class="flex gap-1 align-items-end font-semibold">
+    @if(iconLabel) {
+    <svg-icon [src]="'assets/svgs/'+iconLabel" [svgClass]="'s-icon '+styleClassIconLabel"></svg-icon>
+    }
+    <label [for]="controlName + '_label'" [class]="styleClassLabel">{{label | translate}}
+      @if (isRequired) {
+      <span class="label-required">*</span>
+      }
+      @if (tooltip) {
+      <i class="pi pi-info-circle ml-2 cursor-pointer" [appendTo]="'body'" tooltipStyleClass="tooltip-custom"
+        [tooltipPosition]="tooltipPosition" [pTooltip]="tooltipText"></i>
+      }
+    </label>
+  </div>
+  }
+  <div class="relative mt-1">
+    <input [class.cursor-text]="isDisabled" pInputText [placeholder]="(placeholder  | translate)"
+      [minlength]="minLength?.toString()!" [maxlength]="maxLength?.toString()!"
+      [class.error]="(inputService.submitted && inputService.controlInvalid) || customError"
+      [class.ng-invalid]="(inputService.submitted && inputService.controlInvalid) || customError"
+      [id]="controlName + '_label'" [type]="type" [formControlName]="controlName"
+      [class]="'custom-input app-input-cp w-full ' + styleClass"
+      [class.pre-6]="password || confirmPassword || styleClass.includes('pr-6')" [required]="isRequired" />
+    @if (helpText) {
+    <small class="text-xs text-gray-500 font-light">{{helpText | translate}}</small>
+    }
+
+    @if (password || confirmPassword) {
+    <button type="button" class="cursor-pointer absolute icon-app-input password border-none"
+      (click)="togglePassword() ">
+      <i class="pi secondary-color hover" [class.pi-eye-slash]="!showPassword" [class.pi-eye]="showPassword"></i>
+    </button>
+    }
+  </div>
+
+  @if (isRequired && !isFormArray) {
+  @if (inputService.controlHasRequiredError && inputService.submitted) {
+  <small class="error text-xs"> {{"THIS_FIELD_IS_REQUIRED" | translate}} </small>
+  }
+  }
+  @if (email&& !isFormArray) {
+  @if (inputService.controlHasEmailError && inputService.submitted) {
+  <small class="error text-xs">{{label ? (label | translate) : ("THIS_FIELD" | translate)}} {{"IS_NOT_VALID" |
+    translate}} </small>
+  }
+  }
+  @if (minLength&& !isFormArray) {
+  @if (inputService.controlHasMinLengthError && inputService.submitted) {
+  <small class="error text-xs">{{label ? (label | translate) : ("THIS_FIELD" | translate)}} {{"MUST_CONTAIN_AT_LEAST" |
+    translate}} {{minLength}} {{"CHARACTERS" | translate}}.</small>
+  }
+  }
+  @if (confirmPassword&& !isFormArray) {
+  @if (inputService.confirmPasswordHasMatchError && inputService.submitted && !inputService.controlHasRequiredError) {
+  <small class="error text-xs">{{"PASSWORDS_DO_NOT_MATCH" | translate}}</small>
+  }
+  }
+
+  @if (pattern&& !isFormArray) {
+  @if (inputService.controlHasPatternError && inputService.submitted && !inputService.controlHasRequiredError &&
+  !inputService.controlHasMinLengthError) {
+  <small class="error text-xs">{{patternMessageError | translate}}</small>
+  }
+  }
+</div>

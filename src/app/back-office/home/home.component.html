@@ -1,0 +1,12 @@
+<div class="parent-wrapper  flex flex-column mt-2 mx-3 ">
+  <div class="flex gap-3 align-items-center">
+    <svg-icon src=" assets/svgs/acceuil.svg" svgClass="w-full h-full  secondary-color "></svg-icon>
+    <div class="text-3xl font-bold  secondary-color mb-3 ">
+      {{"HOME_PAGE" | translate}}</div>
+  </div>
+  <div class="flex flex-wrap gap-5 justify-content-center">
+    @for (cardHome of listOfCardsHome; track cardHome.title) {
+    <app-card-home [cardHome]="cardHome"></app-card-home>
+    }
+  </div>
+</div>

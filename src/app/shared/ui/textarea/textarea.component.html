@@ -1,0 +1,48 @@
+<div class="flex flex-column ">
+  @if(label) {
+  <div class="flex gap-1 align-items-end font-semibold">
+    @if(iconLabel) {
+    <svg-icon [src]="'assets/svgs/'+iconLabel" [svgClass]="'s-icon'"></svg-icon>
+    }
+    <label [for]="controlName" [class]="styleClassLabel">
+      {{label | translate}}
+      <ng-content select="[labelPrefix]"></ng-content>
+      @if (isRequired) {
+      <span class="label-required">*</span>
+      }
+      @if (tooltip) {
+      <i class="pi pi-info-circle ml-2 cursor-pointer" [appendTo]="'body'" tooltipStyleClass="tooltip-custom"
+        [tooltipPosition]="tooltipPosition" [pTooltip]="tooltipText"></i>
+      }
+    </label>
+  </div>
+  }
+  <div class=" flex flex-column">
+    <textarea pTextarea [rows]="rows" cols="30" [placeholder]="placeholder | translate"
+      [minlength]="minLength?.toString()!" [maxlength]="maxLength?.toString()!"
+      [class.ng-invalid]="(inputService.submitted && inputService.controlInvalid) || customError"
+      [class.ng-dirty]="(inputService.submitted && inputService.controlInvalid) || customError" [id]="controlName"
+      type="text" [formControlName]="controlName"
+      [class]="' w-full h-full '+( isDisabled ?' cursor-text ':' ') + styleClass " [required]="isRequired"> </textarea>
+    @if (helpText) {
+    <small class="text-xs text-gray-500 font-light">{{helpText}}</small>
+    }
+    @if (!isDisabled) {
+    <small class="text-sm text-gray-500 font-light mt-1">
+      {{inputService.parentFormGroup.get(controlName)?.value?.length + '/' + maxLength }} caractères
+    </small>
+    }
+  </div>
+
+  @if (isRequired && !isFormArray) {
+  @if (inputService.controlHasRequiredError && inputService.submitted) {
+  <small class="error text-xs"> Ce champ est obligatoire. </small>
+  }
+  }
+
+  @if (minLength&& !isFormArray) {
+  @if (inputService.controlHasMinLengthError && inputService.submitted) {
+  <small class="error text-xs">{{label ? label : "Ce champ"}} doit contenir au moins {{minLength}} caractères.</small>
+  }
+  }
+</div>

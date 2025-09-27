@@ -1,0 +1,27 @@
+<div class="parent-wrapper  flex flex-column  mx-3 ">
+  <div class=" mb-5">
+    <div class="flex gap-3 align-items-center">
+      <svg-icon src=" assets/svgs/setting.svg" svgClass="w-full h-full  secondary-color "></svg-icon>
+      <div class="text-3xl font-bold  secondary-color mb-3 ">
+        {{"MEMBER" | translate}}</div>
+    </div>
+    @if (canCreateMode) {
+    <app-button styleClass="my-2" [size]="'small'" type="submit" (clickEv)="showAddPoppup()">{{"ADD_MEMBER" |
+      translate}}</app-button>
+    }
+    <form [formGroup]="myForm">
+      <div class="filters flex w-full flex-wrap gap-3 align-items-center justify-content-between ">
+        <app-input [controlName]="'search'" [placeholder]="'TYPE_TO_SEARCH'" [maxLength]="10000" styleClass=" w-full"
+          class="lg:w-7  w-full"></app-input>
+        <app-dropdown class="lg:w-4  w-full" styleClass="w-full" [placeholder]="'STATUS'" [controlName]="'statusFilter'"
+          [listValues]="listOfStatus" [optionLabel]="'name'" [optionValue]="'value'"></app-dropdown>
+      </div>
+    </form>
+    <app-table [showAddBtn]="false" #table [titleTable]="''" (enableEv)="enableAction($event)"
+      (deactivateEv)="deactivateAction($event)" [columns]="columns" [actions]="actionsTable"
+      (updateEv)="showEditPoppup($event)" [searchHighlightColumns]="['nom','adresse',
+      'email','numTel']
+      ">
+    </app-table>
+  </div>
+</div>

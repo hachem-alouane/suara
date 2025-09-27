@@ -1,0 +1,65 @@
+<div class="flex flex-column justify-content-start">
+  @if(label) {
+  <div class="flex gap-1 align-items-end font-semibold">
+    @if(iconLabel) {
+    <svg-icon [src]="'assets/svgs/'+iconLabel" [svgClass]="'s-icon'"></svg-icon>
+    }
+    <span [id]="controlName + '_label'" [class]="styleClassLabel">{{label | translate}}
+      @if (isRequired) {
+      <span class="label-required">*</span>
+      }
+      @if (tooltip) {
+      <i class="pi pi-info-circle ml-2 cursor-pointer" [appendTo]="'body'" tooltipStyleClass="tooltip-custom"
+        [tooltipPosition]="tooltipPosition" [pTooltip]="tooltipText"></i>
+      }
+    </span>
+  </div>
+  }
+  <div class="flex w-full gap-3 align-items-center justify-content-between">
+    <p-multiselect #focusable [appendTo]="'body'" [fluid]="false" [panelStyleClass]="'custom-panel-dropdown ' "
+      [id]="'controlName'" [dropdownIcon]="'pi pi-sort-down-fill'" [size]="size" [options]="listValues"
+      [filter]="filter" [filterBy]="filterBy" [formControlName]="controlName"
+      [styleClass]="'custom-dropdown mt-1 '  + styleClass" [optionLabel]="optionLabel" [optionValue]="optionValue"
+      [ariaLabelledBy]="controlName + '_label'"
+      [showClear]="(inputService.parentFormGroup.get(controlName)?.value ||inputService.parentFormGroup.get(controlName)?.value === false )  ? true : false"
+      [placeholder]="placeholder | translate" class="w-full "
+      [class.ng-invalid]="(inputService.submitted && inputService.controlInvalid)  || customError"
+      [class.ng-dirty]="(inputService.submitted && inputService.controlInvalid)  || customError"
+      [class.isDisabled]="isDisabled">
+      <ng-template let-selectedOption>
+        <div class="flex items-center gap-2 custom-input ">
+          <div class="cursor-text">{{ selectedOption}}</div>
+        </div>
+      </ng-template>
+      <ng-template let-item>
+        <div class="flex items-center gap-2 custom-input">
+          <div>{{ optionLabel ? item?.[optionLabel] : item}}</div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="emptyfilter">
+        <div class="flex ">
+          <div class="text-base">{{"NO_RESULTS_FOUND" | translate}}</div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="selectedItems" let-selectedItems>
+        @if(!selectedItems?.length) {
+        {{placeholder | translate}}
+        }
+        @else {
+        <span> {{selectedItems?.length + ' '}} {{"ITEMS_SELECTED" | translate}}</span>
+        }
+      </ng-template>
+
+    </p-multiselect>
+    @if (dataViewMode.length) {
+    <app-button [text]="true" [size]="'small'" [appendTo]="'body'" tooltipStyleClass="tooltip-custom"
+      [tooltipPosition]="'top'" [pTooltip]="'VIEW' | translate" (clickEv)="showView()">
+      <i class="pi pi-search text-xl"></i>
+    </app-button>
+    }
+  </div>
+  @if (isRequired && !isFormArray) {
+  @if (inputService.controlHasRequiredError && inputService.submitted) {
+  <small class="error"> {{"THIS_FIELD_IS_REQUIRED" | translate}} </small>
+  } }
+</div>

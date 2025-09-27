@@ -1,0 +1,55 @@
+<div class="flex flex-column justify-content-start">
+
+  @if (label) {
+  <div class="flex gap-1 align-items-end font-semibold">
+    @if (iconLabel) {
+    <svg-icon [src]="'assets/svgs/' + iconLabel" svgClass="s-icon"></svg-icon>
+    }
+    <span [class]="styleClassLabel">
+      {{ label | translate }}
+      @if (isRequired) {
+      <span class="label-required">*</span>
+      }
+      @if (tooltip) {
+      <i class="pi pi-info-circle ml-2 cursor-pointer" [appendTo]="'body'" tooltipStyleClass="tooltip-custom"
+        [tooltipPosition]="tooltipPosition" [pTooltip]="tooltipText"></i>
+      }
+    </span>
+  </div>
+  }
+  <div class="flex w-full justify-content-start ">
+    <app-input [controlName]="'filterSource'" [placeholder]="'TYPE_TO_SEARCH'" [maxLength]="255"
+      [styleClassLabel]="'secondary-color'" styleClass="w-full" class="w-full"></app-input>
+  </div>
+
+  <p-pickList #picklistCustom [styleClass]="'custom-picklist mt-2 ' + styleClass" [source]="source" [target]="target"
+    [dragdrop]="true" [responsive]="responsive" [breakpoint]="breakpoint" [showSourceControls]="false"
+    [showTargetControls]="false" [sourceStyle]="{ height: listHeight }" [targetStyle]="{ height: listHeight }"
+    [filterBy]="filterBy" [sourceFilterPlaceholder]="(sourceFilterPlaceholder | translate)"
+    [targetFilterPlaceholder]="(targetFilterPlaceholder | translate)" [metaKeySelection]="false">
+    <ng-template let-item pTemplate="item">
+      <div class="flex flex-wrap p-2 align-items-center gap-3 w-full">
+        <p-tag [value]="item.moduleName" [styleClass]="'text-white p-1 text-sm ' + (item.moduleNameRef |moduleTag ) "
+          rounded></p-tag>
+        <span class="font-medium text-sm">{{ item.permName }}</span>
+      </div>
+    </ng-template>
+    <ng-template let-item pTemplate="sourceHeader">
+      <div
+        class="flex w-full align-items-center justify-content-center bg-gray-100 py-2 rounded-t-lg border-b font-semibold text-sm text-gray-700">
+        <span>{{ sourceHeader | translate }}</span>
+      </div>
+    </ng-template>
+    <ng-template let-item pTemplate="targetHeader">
+      <div
+        class="flex w-full align-items-center justify-content-center bg-gray-100 py-2 rounded-t-lg border-b font-semibold text-sm text-gray-700">
+        <span>{{ targetHeader | translate }}</span>
+      </div>
+    </ng-template>
+  </p-pickList>
+
+
+  @if (isRequired && (!target || target.length === 0)) {
+  <small class="error mt-1"> {{ 'THIS_FIELD_IS_REQUIRED' | translate }} </small>
+  }
+</div>

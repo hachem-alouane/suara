@@ -1,0 +1,17 @@
+<div class="relative">
+  <div class="grid ">
+    <div class="modal-body flex flex-column w-full  ">
+      <div class=" flex  flex-column gap-3  w-full  ">
+        <app-basic-table [loading]="loading" #table [columns]="columns" [showEmptyTable]="true">
+        </app-basic-table>
+      </div>
+      <div class=" footer-set-element flex gap-3 w-full justify-content-end ">
+        <app-button (clickEv)="cancel()" size="small"
+          styleClass=" p-button  surface-400 hover:surface-600 border-none border-round-sm ">
+          {{"CLOSE" | translate }}
+        </app-button>
+
+      </div>
+    </div>
+  </div>
+</div>

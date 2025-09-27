@@ -1,0 +1,5 @@
+<div class="flex  align-items-center">
+  <p-radiobutton [size]="size" [styleClass]="styleClass" [value]="inputService.parentFormGroup.get(controlName)?.value"
+    [inputId]="controlName" [formControlName]="controlName" [binary]="true" />
+  <label [for]="controlName" class="ml-2">{{ label}}</label>
+</div>

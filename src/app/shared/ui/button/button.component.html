@@ -1,0 +1,7 @@
+<button [disabled]="isDisabled" [class.cursor-not-allowed]="isDisabled" pRipple [outlined]="outlined"
+  [severity]="severity" [type]="type" (click)="clickEv.emit($event)" pButton [size]="size"
+  [class]="'border-none '+  styleClass" [text]="text" [rounded]="rounded" [loading]="loading" [raised]="raised">
+  <ng-content select="[prefix]"></ng-content>
+  <ng-content></ng-content>
+  <ng-content select="[suffix]"></ng-content>
+</button>

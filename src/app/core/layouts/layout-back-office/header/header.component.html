@@ -1,0 +1,155 @@
+<header>
+  <p-menubar styleClass="header border-noround border-none gap-0 p-0" autoDisplay="true" modal="false">
+    <ng-template pTemplate="start">
+      <div class="  flex align-items-center custom-start-sidebar py-1 ">
+        <app-button class="block lg:hidden" (clickEv)="sidebarService.toggleSidebarMobile()">
+          <i class="pi pi-bars"></i>
+        </app-button>
+        <div>
+        </div>
+        @if ({value: sideBarDesktopIsOpen$ | async}; as sideBarDesktopIsOpen) {
+        <app-button [text]="true" (clickEv)="sidebarService.toggleSidebarDesktop()"
+          styleClass="outline-none p-1  hidden lg:block">
+          <div class="flex h-full align-items-center">
+            <i class="ki-duotone ki-exit-left text-3xl text-primary rotate-180"
+              [class.active]="sideBarDesktopIsOpen.value">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>
+          </div>
+        </app-button>
+        }
+      </div>
+    </ng-template>
+    <ng-template pTemplate="end">
+      <div class=" px-4 flex custom-gap-header justify-content-end align-items-center py-1 ">
+        <app-link-button [routerLink]="'/users'" [text]="true" styleClass="p-1  mt-1 hidden lg:block"
+          [appendTo]="'body'" tooltipStyleClass="tooltip-custom" [tooltipPosition]="'bottom'"
+          [pTooltip]="'UPDATE' | translate">
+          <div class="flex" style="width: 20px;height: 20px;">
+            <svg-icon src="assets/svgs/setting.svg" svgClass="w-full h-full" class="w-full h-full"></svg-icon>
+          </div>
+        </app-link-button>
+        <app-link-button [routerLink]="'/dashboard'" [text]="true" styleClass="p-1 mt-1 hidden lg:block"
+          [appendTo]="'body'" tooltipStyleClass="tooltip-custom" [tooltipPosition]="'bottom'"
+          [pTooltip]="'HOME_PAGE' | translate">
+          <div class="flex" style="width: 20px;height: 20px;">
+            <svg-icon src="assets/svgs/acceuil.svg" svgClass="w-full h-full" class="w-full h-full"></svg-icon>
+          </div>
+        </app-link-button>
+        <app-link-button [routerLink]="'/incoming-correspondence'" [text]="true" styleClass="p-1 mt-1  hidden lg:block"
+          [appendTo]="'body'" tooltipStyleClass="tooltip-custom" [tooltipPosition]="'bottom'"
+          [pTooltip]="'MESSAGES' | translate">
+          <div class="flex" style="width: 20px;height: 20px;">
+            <svg-icon src="assets/svgs/sms.svg" svgClass="w-full h-full" class="w-full h-full"></svg-icon>
+          </div>
+        </app-link-button>
+        <div class="mt-3">
+          <p-overlaybadge [value]="countNotifications | notifCount" styleClass=" outline-none bg-notif notif-badge ">
+            <app-button [text]="true" styleClass="p-1" (clickEv)="notifPopover.toggle($event);markAllAsRead()">
+              <i class="pi pi-bell text-xl"></i>
+            </app-button>
+          </p-overlaybadge>
+        </div>
+        <app-button [text]="true" [size]="'small'" (clickEv)="overlayPanelProfile.toggle($event)"
+          styleClass=" p-0 border-radius-5 h-full flex border-none cursor-pointer">
+          <div class="flex" style="width: 45px;height: 45px;">
+            <svg-icon src="assets/svgs/user-photo.svg" svgClass="w-full h-full" class="w-full h-full"></svg-icon>
+          </div>
+        </app-button>
+        <div class="flex h-full ">
+          <app-button [size]="'small'" (clickEv)="menu.toggle($event)"
+            styleClass="bg-tertiary-color flex align-items-center justify-content-center ">
+            <div class="sm:block hidden">
+              {{"LANGUAGE" | translate}}
+            </div>
+            <div class="flex" style="width: 20px;height: 20px;">
+              <svg-icon src="assets/svgs/world.svg" svgClass="w-full h-full" class="w-full h-full"></svg-icon>
+            </div>
+          </app-button>
+        </div>
+      </div>
+    </ng-template>
+  </p-menubar>
+  <p-menu styleClass="custom-menu-header-language" #menu [model]="items" [popup]="true">
+    <ng-template pTemplate="item" let-item>
+      <div class="flex justify-content-between  align-items-center">
+        <div>
+          <i [class]="item?.icon + ' ' + item?.iconClass"></i>
+        </div>
+        <div class="text-sm font-semibold text-left cursor-pointer py-1 px-2 w-full">{{item?.label}}</div>
+      </div>
+    </ng-template>
+  </p-menu>
+</header>
+<p-popover #overlayPanelProfile [styleClass]="'overlay-custom'" [appendTo]="'body'">
+  <ng-template pTemplate="content">
+    <div class="p-2" data-kt-menu="true">
+      <div class="menu-item ">
+        <div class="flex gap-3 mx-2 align-items-center">
+          <div>
+            <div class="p-0 w-3rem h-3rem border-radius-5 border-none cursor-pointer">
+              <svg-icon src="assets/svgs/user-photo.svg" svgClass="w-full h-full" class="w-full h-full"></svg-icon>
+            </div>
+          </div>
+          @if (currentUser) {
+          <div class="flex flex-column align-items-end justify-content-end">
+            <div class=" font-bold text-sm">{{currentUser.firstName + ' ' + currentUser.lastName }}</div>
+            <div class=" text-xs ">{{ currentUser.role?.name ?? ""| translate }}</div>
+            <div class=" text-gray-400 text-sm">{{currentUser.email! |
+              truncate:24}}</div>
+          </div>
+          }
+        </div>
+      </div>
+      <div class="flex  flex-column mt-2">
+        <app-button [text]="true" [size]="'small'"
+          styleClass="w-full h-full mx-2 text-base justify-content-start pl-0 mt-2 text-black-alpha-80 hover:text-primary bg-white hover:bg-gray-100 py-1"
+          (clickEv)="logout()" tabindex="0" (keydown.enter)="logout()" class="menu-link ">
+          <div class="flex h-full justify-content-between w-full  align-items-center">
+            <div class="p-0 w-1rem h-2rem     cursor-pointer">
+              <svg-icon src="assets/svgs/off.svg" svgClass="w-full h-full" class="w-full h-full"></svg-icon>
+            </div>
+            <div class="text-sm font-semibold flex justify-content-start  cursor-pointer py-1 px-2 w-full">
+              {{"SIGN_OUT" | translate}}
+            </div>
+          </div>
+        </app-button>
+      </div>
+    </div>
+  </ng-template>
+</p-popover>
+
+
+<p-popover #notifPopover [styleClass]="'overlay-custom overlay-custom-notif'" [appendTo]="'body'">
+  <ng-template pTemplate="content">
+    <div class="w-20rem gap-3  flex flex-column justify-content-center align-items-center ">
+      <div class="py-1 pl-1 pr-1 flex w-full flex-column"
+        style="min-height: 300px ;overflow-x: hidden;overflow-y: hidden;">
+        @if (!notifications.length) {
+        <div class="flex w-full flex-column h-full justify-content-center align-items-center ">
+          <i class="pi pi-bell-slash text-8xl"></i>
+          <div class="flex flex-column gap-1 justify-content-center align-items-center">
+            <div class="text-center  text-sm">{{"NO_NOTIFICATIONS" |translate}}</div>
+            <div class="text-center  text-gray-400 text-sm">{{"NO_NOTIFICATIONS_NOW" |translate}}</div>
+          </div>
+        </div>
+        }@else {
+        <div class="flex w-full flex-column">
+          <p-virtualscroller [items]="notifications" [itemSize]="70" scrollHeight="300px"
+            styleClass="border border-surface " [style]="{ width: '100%' ,'overflow-x' : 'hidden'}">
+            <ng-template pTemplate="item" let-item let-options="options">
+              <div class="flex w-full  flex-column ">
+                <app-item-notification (notificationClick)="notifPopover.hide()" class="w-full flex"
+                  [notification]="item"></app-item-notification>
+                @if (options?.index
+                < options?.count - 1) { <p-divider styleClass=" bg-black-alpha-60 flex w-full mx-2 " type="solid" />}
+              </div>
+            </ng-template>
+          </p-virtualscroller>
+        </div>
+        }
+      </div>
+    </div>
+  </ng-template>
+</p-popover>
